@@ -1,9 +1,14 @@
+// Libraries
 import React from 'react';
-import './App.css';
-import { Switch, Route } from 'react-router-dom';
-import HomePage from './pages/homepage/homepage.component.jsx';
-import ShopPage from './pages/shop/shop.component';
 
+// Components
+import { Switch, Route } from 'react-router-dom';
+import HomePage from './pages/homepage/homepage.component';
+import ShopPage from './pages/shop/shop.component';
+import Header from './components/header/header.component';
+
+// Styles
+import './App.css';
 
 function App() {
   return (
@@ -15,6 +20,7 @@ function App() {
          * <Switch> switches views by rendering only the first match
          */
       }
+      <Header />
       <Switch>
         <Route exact={true} path="/" component={HomePage}></Route>
         <Route path="/shop" component={ShopPage}></Route>
