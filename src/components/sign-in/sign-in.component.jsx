@@ -5,7 +5,7 @@ import React from 'react';
 import FormInput from '../form-input/form-imput.component';
 import CustomButton from '../custom-button/custom-button.component';
 
-import { signInWithGoogle } from '../../firebase/firebase.utils';
+import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
 
 // Styles
 import './sign-in.styles.scss';
@@ -20,10 +20,19 @@ class SignIn extends React.Component {
     }
 
     // Handles form submit
-    handleSubmit = event => {
+    handleSubmit = async event => {
         event.preventDefault();
-        this.state({ email: "", password: ""});
 
+        const { email, password } = this.state;
+        
+        try {
+            
+            await auth.signInWithEmailAndPassword(email, password);
+            this.setState({ email: "", password: ""});
+
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     // Handles email change
@@ -40,9 +49,23 @@ class SignIn extends React.Component {
                 <span>Sign in with your email and password</span>
 
                 <form onSubmit={(e) => this.handleSubmit(e)}>
-                    <FormInput name="email" type="email" value={this.state.email} handleChange={this.handleChange} label={"E-mail"} required/>
+                    <FormInput 
+                        name="email"
+                        type="email"
+                        value={this.state.email}
+                        handleChange={this.handleChange}
+                        label={"E-mail"}
+                        required
+                    />
 
-                    <FormInput name="password" type="password" value={this.state.password} handleChange={this.handleChange} label={"Password"} required/>
+                    <FormInput 
+                        name="password" 
+                        type="password" 
+                        value={this.state.password} 
+                        handleChange={this.handleChange} 
+                        label={"Password"} 
+                        required
+                    />
 
                     <div className="buttons">
                         <CustomButton type="submit"> Sign in </CustomButton>
