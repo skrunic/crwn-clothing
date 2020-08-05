@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { auth, createUserProfileDoc } from './firebase/firebase.utils';
 
@@ -58,17 +58,28 @@ class App extends React.Component {
         <Switch>
           <Route exact={true} path="/" component={HomePage}></Route>
           <Route path="/shop" component={ShopPage}></Route>
-          <Route path="/signin" component={SignInAndSignUpPage}></Route>
+          <Route 
+            exact 
+            path="/signin"
+            render={() => 
+              this.props.currentUser ? 
+                (<Redirect to="" />) : 
+                (<SignInAndSignUpPage />)
+            }></Route>
         </Switch>
       </div>
     )
   }
 }
 
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser
+});
+
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
-})
+});
 
 // Only pass mapDispatchToProps because the component doesn't need currentUser data from the state
 // Reducer will read state value and update it 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
