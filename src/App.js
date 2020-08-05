@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDoc } from './firebase/firebase.utils';
 
 // Components
 import { Switch, Route } from 'react-router-dom';
@@ -24,11 +24,24 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount(){
-    this.unsubscribeFromAuth = auth.onAuthStateChanged( user => {
-      this.setState({ currentUser: user });
+    this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
+      
+      if(userAuth){  
+        const userRef = await createUserProfileDoc(userAuth);
+        
+        userRef.onSnapshot(snapShot => {
+          this.setState({ 
+            id: snapShot.id,
+            ...snapShot.data()
+          });
 
-      console.log(user);
-    })
+          console.log(this.state);
+        });
+      }
+
+      this.setState({ currentUser: null });
+
+    });
   }
 
   componentWillUnmount(){
