@@ -34,12 +34,12 @@ const Header = ({ currentUser, hidden }) => (
                 :
                 <Link className="option" to="/signin"> SIGN IN </Link>
             }
-            {
-                hidden? null :
-                <CartIcon />
-            }
+            <CartIcon />
         </div>
-        <CartDropdown />
+        {
+            hidden? null :
+            <CartDropdown />
+        }
     </div>
 )
 
