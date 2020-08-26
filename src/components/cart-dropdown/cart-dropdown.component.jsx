@@ -4,13 +4,16 @@ import { withRouter } from 'react-router-dom';
 
 import { createStructuredSelector } from 'reselect';
 import { selectCartItems } from '../../redux/cart/cart.selectors';
+import { toggleCartHidden } from '../../redux/cart/cart.selectors';
 
 import CustomButton from '../custom-button/custom-button.component';
 import CartItem from '../cart-item/cart-item.component';
 
 import './cart-dropdown.styles.scss';
 
-const CartDropdown = ({ cartItems, history }) => (
+// dispatch is passed to child (this component) if no mapDispatchToProps is passed in connect()
+// Used for one-off state updates
+const CartDropdown = ({ cartItems, history, dispatch }) => (
     <div className="cart-dropdown">
         <div className="cart-items">
             {
@@ -24,7 +27,10 @@ const CartDropdown = ({ cartItems, history }) => (
                 )
             }
         </div>
-        <CustomButton onClick={() => history.push("/checkout")}> GO TO CHECKOUT </CustomButton>
+        <CustomButton onClick={() => {
+            history.push("/checkout");
+            dispatch(toggleCartHidden) // toggleCartHidden is more like a "reaction" when fired because it only inverts existing state
+        }}> GO TO CHECKOUT </CustomButton>
     </div>
 );
 
