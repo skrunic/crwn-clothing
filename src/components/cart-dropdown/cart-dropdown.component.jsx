@@ -13,6 +13,7 @@ import './cart-dropdown.styles.scss';
 
 // dispatch is passed to child (this component) if no mapDispatchToProps is passed in connect()
 // Used for one-off state updates
+// Try destructuring ...otherProps to see what is being passed into component props
 const CartDropdown = ({ cartItems, history, dispatch }) => (
     <div className="cart-dropdown">
         <div className="cart-items">
@@ -29,7 +30,7 @@ const CartDropdown = ({ cartItems, history, dispatch }) => (
         </div>
         <CustomButton onClick={() => {
             history.push("/checkout");
-            dispatch(toggleCartHidden) // toggleCartHidden is more like a "reaction" when fired because it only inverts existing state
+            dispatch(toggleCartHidden()) // toggleCartHidden is more like a "reaction" when fired because it only inverts existing state
         }}> GO TO CHECKOUT </CustomButton>
     </div>
 );
